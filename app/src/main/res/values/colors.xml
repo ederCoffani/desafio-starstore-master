@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFB300</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorAccent">#d9cb30</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#4c4c4c</color>
+
+    <!--text-->
+    <color name="colorPrimarytext">#212121</color>
+    <!--Login and NavigationDrower-->
+    <color name="colorBlanco">#FFFFFF</color>
+    <color name="colorNegro">#000000</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="colorPrimaryButton">#2b388e</color>
+    <color name="colorPrimaryDarkButton">#293583</color>
+
+    <!--coler intro-->
+    <color name="colorSlider1">#1E88E5</color>
+    <color name="colorButton1">#1565C0</color>
+
+    <color name="colorSlider2">#B388FF</color>
+    <color name="colorButton2">#7C4DFF</color>
+
+    <color name="colorSlider3">#FFFFFF</color>
+    <color name="colorButton3">#4c4c4c</color>
+
+    <color name="colorSlider4">#2979FF</color>
+    <color name="colorButton4">#1565C0</color>
+
+
+</resources>

@@ -52,8 +52,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     //GRIDE lAYOUT
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    //PICASSO IMAGE
-    compile 'com.squareup.picasso:picasso:2.5.2'
     //ANNOTATON
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

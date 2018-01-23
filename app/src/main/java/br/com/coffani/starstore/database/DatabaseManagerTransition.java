@@ -20,21 +20,23 @@ import br.com.coffani.starstore.domain.User;
 
 public class DatabaseManagerTransition  extends DatabaseManager {
     private static final String TABELA = "historic";
+
     private static final String ID = "_id";
     private static final String VALOR = "valor";
     private static final String DATAHORA = "datahora";
     private static final String DIGITO = "digito";
     private static final String NAME = "name";
 
-    private static final int VERSAO = 1;
+    public static final String CREATE_TABLE = "create table " + TABELA + "("
+            + ID + " integer PRIMARY KEY AUTOINCREMENT,"
+            + VALOR + " text NULL, "
+            + DATAHORA + " text NULL, "
+            + DIGITO + " text NULL, "
+            + NAME + " text NULL "
+            +");";
 
-    String sql = "CREATE TABLE"+TABELA+"("
-            + ID + " integer primary key autoincrement,"
-            + VALOR + " text,"
-            + DATAHORA + " text,"
-            + DIGITO + " text,"
-            + NAME + "text"
-            +")";
+
+
 
     public DatabaseManagerTransition(Context ctx) {
         super(ctx);
@@ -59,7 +61,7 @@ public class DatabaseManagerTransition  extends DatabaseManager {
 
 
     public void insertar_parametros(String id, String valor, String datahora, String digito, String name) {
-        Log.d("transition_insertar", super.getDb().insert(TABELA,null,generarContentValues(id, valor, datahora, digito,name))+"");
+        Log.d("transition_insertar", super.getDb().insert(TABELA,null,generarContentValues(id, valor, datahora, digito, name))+"");
     }
 
     public void actualizar_parametros(String id, String valor, String datahora, String digito, String name) {
@@ -117,10 +119,11 @@ public class DatabaseManagerTransition  extends DatabaseManager {
         while (c.moveToNext()){
             Historic historic = new Historic();
 
-            historic.setID(c.getString(0));
-            historic.setData(c.getString(1));
-            historic.setValue(Double.parseDouble(c.getString(2)));
-            historic.setCard_holder_name(c.getString(3));
+            historic.setId(c.getString(0));
+            historic.setDigito(c.getString(1));
+            historic.setDatahora(c.getString(2));
+            historic.setValor(c.getString(3));
+            historic.setName(c.getString(4));
             //usuario.setActive(false);
 
             list.add(historic);
@@ -131,14 +134,15 @@ public class DatabaseManagerTransition  extends DatabaseManager {
 
     public Historic getHistoric(String ident){
 
-        Cursor c1 = super.getDb().rawQuery("SELECT id, datahora, digitocart, name FROM user WHERE email" + "='" + ident+ "'", null);
+        Cursor c1 = super.getDb().rawQuery("SELECT _id, valor, datahora, digito, name FROM historic WHERE name" + "='" + ident+ "'", null);
         Historic historic = new Historic();
 
         c1.moveToNext();
 
-        historic.setID(c1.getString(0));
-        historic.setData(c1.getString(1));
-        historic.setValue(Double.parseDouble(c1.getString(2)));
-        historic.setCard_holder_name(c1.getString(3));
+        historic.setId(c1.getString(0));
+        historic.setDatahora(c1.getString(1));
+        historic.setDigito(c1.getString(2));
+        historic.setValor(c1.getString(3));
+        historic.setName(c1.getString(4));
         return historic;
     }}

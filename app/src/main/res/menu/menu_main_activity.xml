@@ -4,12 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="br.com.coffani.starstore.feature.home.MainActivity">
 
-    <item
-        android:id="@+id/action_search"
-        android:title="Buscar Produto"
-        android:icon="@drawable/ic_search_products"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearcView"/>
+
 
     <item
         android:id="@+id/menu_carrinho"

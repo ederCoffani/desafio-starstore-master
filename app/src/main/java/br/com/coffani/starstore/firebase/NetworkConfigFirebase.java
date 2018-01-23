@@ -37,7 +37,7 @@ public class NetworkConfigFirebase {
 
     public static DatabaseReference getFirebase() {
         if (reference == null) {
-            reference = FirebaseDatabase.getInstance().getReference("user");
+            reference = FirebaseDatabase.getInstance().getReference();
         }
         return reference;
     }
@@ -45,13 +45,6 @@ public class NetworkConfigFirebase {
     public static DatabaseReference getReferenceCard() {
         if (referenceCard == null) {
             referenceCard = FirebaseDatabase.getInstance().getReference("cards");
-        }
-        return reference;
-    }
-
-    public static DatabaseReference getReferenceHistoric() {
-        if (referenceHistoric == null) {
-            referenceHistoric = FirebaseDatabase.getInstance().getReference();
         }
         return reference;
     }

@@ -1,6 +1,9 @@
 package br.com.coffani.starstore.feature.home;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -8,18 +11,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -41,12 +47,16 @@ import br.com.coffani.starstore.base.mvp.MvpActivity;
 import br.com.coffani.starstore.database.DatabaseManagerUser;
 import br.com.coffani.starstore.domain.Product;
 import br.com.coffani.starstore.domain.User;
+import br.com.coffani.starstore.feature.detail.DetailActivity;
+import br.com.coffani.starstore.feature.historic.HistoricActivity;
 import br.com.coffani.starstore.feature.login.LoginActivity;
 import br.com.coffani.starstore.feature.payment.PaymentActivity;
 import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 import br.com.coffani.starstore.helper.Base64Custom;
 //import br.com.coffani.starstore.helper.PreferenciasAndroid;
 import butterknife.ButterKnife;
+
+import static br.com.coffani.starstore.adapter.StoreAdapter.*;
 
 public class MainActivity extends MvpActivity<MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "LOJA";
@@ -78,7 +88,60 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         ButterKnife.bind(this);
 //        checkUser();
 
+        initViews();
+        presenter.loadData(query);
 
+        //se agrego codigo del 39 al 68
+//        Bundle b = getIntent().getExtras();
+//
+//        ident = b.getString("IDENT");
+//
+//        databaseManagerUser = new DatabaseManagerUser(getApplicationContext());
+//        itemUsuario = databaseManagerUser.getUsuario(ident);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setNavigationViewListner();
+
+        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+//
+//        ((TextView) header.findViewById(R.id.tv_nombre_usuario_menu)).setText(itemUsuario.getName());
+//        ((TextView) header.findViewById(R.id.tv_correo_menu)).setText(itemUsuario.getEmail());
+//
+//
+//        String idenficadorUsuario = Base64Custom.codificarBase64(itemUsuario.getName());
+//
+//        PreferenciasAndroid preferenciasAndroid = new PreferenciasAndroid(MainActivity.this);
+//        preferenciasAndroid.salvarUsuarioPrefencias(idenficadorUsuario, itemUsuario.getEmail());
+
+        Bitmap bitmapsinfoto = BitmapFactory.decodeResource(getResources(), R.drawable.imagen);
+        RoundedBitmapDrawable roundedBitmapDrawablesinfoto = RoundedBitmapDrawableFactory.create(getResources(), bitmapsinfoto);
+        roundedBitmapDrawablesinfoto.setCircular(true);
+
+        ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawablesinfoto);
+//        if (itemUsuario.getBytes() != null) {
+//            byte[] foodImage = itemUsuario.getBytes();
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
+//
+//            ((ImageView) header.findViewById(R.id.imageView)).setImageBitmap(bitmap);
+//
+//            Bitmap bitmap2 = ((BitmapDrawable) ((ImageView) header.findViewById(R.id.imageView)).getDrawable()).getBitmap();
+//            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap2);
+//            roundedBitmapDrawable.setCircular(true);
+//
+//            ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawable);
+//        }
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+    @Override
+    public void initViews() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -98,69 +161,33 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 }
             }
         });
-        presenter.loadData(query);
-
-        //se agrego codigo del 39 al 68
-        Bundle b = getIntent().getExtras();
-
-        ident = b.getString("IDENT");
-
-        databaseManagerUser = new DatabaseManagerUser(getApplicationContext());
-        itemUsuario = databaseManagerUser.getUsuario(ident);
-
-        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
-
-        ((TextView) header.findViewById(R.id.tv_nombre_usuario_menu)).setText(itemUsuario.getName());
-        ((TextView) header.findViewById(R.id.tv_correo_menu)).setText(itemUsuario.getEmail());
-
-
-//        String idenficadorUsuario = Base64Custom.codificarBase64(itemUsuario.getName());
-//
-//        PreferenciasAndroid preferenciasAndroid = new PreferenciasAndroid(MainActivity.this);
-//        preferenciasAndroid.salvarUsuarioPrefencias(idenficadorUsuario, itemUsuario.getEmail());
-
-        Bitmap bitmapsinfoto = BitmapFactory.decodeResource(getResources(), R.drawable.imagen);
-        RoundedBitmapDrawable roundedBitmapDrawablesinfoto = RoundedBitmapDrawableFactory.create(getResources(), bitmapsinfoto);
-        roundedBitmapDrawablesinfoto.setCircular(true);
-
-        ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawablesinfoto);
-
-        if (itemUsuario.getBytes() != null) {
-            byte[] foodImage = itemUsuario.getBytes();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
-
-            ((ImageView) header.findViewById(R.id.imageView)).setImageBitmap(bitmap);
-
-            Bitmap bitmap2 = ((BitmapDrawable) ((ImageView) header.findViewById(R.id.imageView)).getDrawable()).getBitmap();
-            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap2);
-            roundedBitmapDrawable.setCircular(true);
-
-            ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawable);
-        }
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setNavigationViewListner();
-
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        getMenuInflater().inflate(R.menu.menu_searchable_activity, menu);
+
+        MenuItem search = menu.findItem(R.id.action_searchable_activity);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        search(searchView);
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    private void search(SearchView searchView) {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if (storeAdapter != null) storeAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -168,28 +195,21 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         if (item.getItemId() == R.id.menu_carrinho) {
             startActivity(new Intent(MainActivity.this, PaymentActivity.class));
         }
-        if (item.getItemId() == R.id.action_search) {
-            startActivity(new Intent(MainActivity.this, PaymentActivity.class));
-        }
 
         return super.onOptionsItemSelected(item);
     }
-
-
     @Override
     public void showLoading() {
         showProgressDialog();
     }
-
     @Override
     public void hideLoaging() {
         hideProgressDialog();
     }
-
     @Override
     public void getDataSuccess(List<Product> pList) {
         this.pList = pList;
-        storeAdapter = new StoreAdapter(this, pList);
+        storeAdapter = new StoreAdapter(this, (ArrayList<Product>) pList);
         recyclerView.setAdapter(storeAdapter);
         storeAdapter.adicionarListaLoja((ArrayList<Product>) pList);
     }
@@ -200,10 +220,8 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
 
     }
 
-    @Override
-    public void moveToDetail(Intent intent) {
 
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -214,7 +232,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -224,16 +241,15 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
 
             case R.id.nav_historic_shopping: {
                 Toast.makeText(getApplicationContext(), "Historicos", Toast.LENGTH_SHORT).show();
-//                Intent it =new Intent(getApplicationContext(), HistoricActivity.class);
-//                startActivity(it);
-                //do somthing
+                Intent it =new Intent(getApplicationContext(), HistoricActivity.class);
+                startActivity(it);
                 break;
             }
-            case R.id.login_firebase: {
+            case R.id.menu_carrinho: {
 //                logout();
-                Toast.makeText(getApplicationContext(), "Login", Toast.LENGTH_SHORT).show();
-//                Intent it = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(it);
+                Toast.makeText(getApplicationContext(), "Carrinho", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, PaymentActivity.class));
+
                 break;
             }
             case R.id.nav_config: {
@@ -253,7 +269,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 //    private void logout() {
 //        PreferenciasAndroid.saveSharedSetting(MainActivity.this, "ClipCodes", "true");
 //        PreferenciasAndroid.SharedPrefesSAVE(getApplicationContext(), "");
@@ -262,7 +277,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
 //
 //        finish();
 //    }
-
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */

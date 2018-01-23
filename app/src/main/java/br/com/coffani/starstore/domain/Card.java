@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 
@@ -122,24 +126,50 @@ public class Card implements Parcelable {
         }
     };
 
+//    public void salvar(){
+//        Card card = new Card(getId(), getCard_holder_name(), getValue(), getCvv(), getCard_number(), getExp_date());
+//        DatabaseReference reference = NetworkConfigFirebase.getReferenceCard();
+//
+//        String id = reference.push().getKey();
+//        card.setId(id);
+//
+//        card.setValue(getValue());
+//        card.setExp_date(getExp_date());
+//        card.setCvv(getCvv());
+//        card.setCard_number(getCard_number());
+//        card.setCard_holder_name(getCard_holder_name());
+//
+//        reference.child(card.getId()).setValue(card);
+//
+//
+//
+//    }
 
-    public void salvar(String s){
-        Card card = new Card(getId(), getCard_holder_name(), getValue(), getCvv(), getCard_number(), getExp_date());
-        DatabaseReference reference = NetworkConfigFirebase.getReferenceCard();
-
-        String id = reference.push().getKey();
-        this.id = s;
-        card.setId(id);
-
-        card.setValue(getValue());
-        card.setExp_date(getExp_date());
-        card.setCvv(getCvv());
-        card.setCard_number(getCard_number());
-        card.setCard_holder_name(getCard_holder_name());
-
-        reference.child(card.getId()).setValue(card);
+    public void salvar() {
+       Card c = new Card();
 
 
+        DatabaseReference referenciaFirebase = NetworkConfigFirebase.getFirebase();
+
+        String id = referenciaFirebase.push().getKey();
+        c.setId(id);
+
+        referenciaFirebase.child("payment").child(c.getId()).setValue(this);
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> hashMapPayment = new HashMap<>();
+
+        hashMapPayment.put("id", getId());
+        hashMapPayment.put("data_espedicao", getExp_date());
+        hashMapPayment.put("cvv", getCvv());
+        hashMapPayment.put("number_card", getCard_number());
+        hashMapPayment.put("card_holder_name", getCard_holder_name());
+        hashMapPayment.put("valor", getValue());
+
+
+        return hashMapPayment;
 
     }
 

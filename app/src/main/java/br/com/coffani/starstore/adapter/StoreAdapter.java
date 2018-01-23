@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,40 +23,38 @@ import java.util.List;
 import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.domain.Product;
 import br.com.coffani.starstore.feature.detail.DetailActivity;
+import br.com.coffani.starstore.helper.RecyclerViewOnClickListenerHack;
 
 /**
  * Created by kaike on 23/09/2017.
  */
 
-public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
-
-    private ArrayList<Product> dataset;
+public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> implements Filterable {
+    private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
+    private ArrayList<Product> mArrayList;
+    private ArrayList<Product> mFilteredList;
     private Context mContext;
 
-    public StoreAdapter(Context mContext, List<Product> mList) {
+    public StoreAdapter(Context mContext, ArrayList<Product> mList) {
         this.mContext = mContext;
-        this.dataset = (ArrayList<Product>) mList;
-        dataset = new ArrayList<>();
+        this.mArrayList = (ArrayList<Product>) mList;
+        mFilteredList = (ArrayList<Product>) mList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.loja_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.store_row, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Product l = dataset.get(position);
+        final Product l = mArrayList.get(position);
 
 
         BigDecimal valor = new BigDecimal(l.getValor());
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         String formatado = nf.format (valor);
-
-
-
-
         holder.titleTv.setText(l.getTitulo());
         holder.subtitleTv.setText(formatado);
         Glide.with(mContext)
@@ -79,15 +79,55 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return mArrayList.size();
     }
-
+    public void setRecyclerViewOnClickListenerHack(RecyclerViewOnClickListenerHack r){
+        mRecyclerViewOnClickListenerHack = r;
+    }
     public void adicionarListaLoja(ArrayList<Product> listProduct) {
-        dataset.addAll(listProduct);
+        mArrayList.addAll(listProduct);
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+
+                    mFilteredList = mArrayList;
+                } else {
+
+                    ArrayList<Product> filteredList = new ArrayList<>();
+
+                    for (Product androidVersion : mArrayList) {
+
+                        if (androidVersion.getLoja().toLowerCase().contains(charString) || androidVersion.getTitulo().toLowerCase().contains(charString)) {
+                            filteredList.add(androidVersion);
+                        }
+                    }
+
+                    mFilteredList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<Product>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView imageV;
         private TextView titleTv;
@@ -98,6 +138,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             imageV = (ImageView) itemView.findViewById(R.id.imageV);
             titleTv = (TextView) itemView.findViewById(R.id.tv_title);
             subtitleTv = (TextView) itemView.findViewById(R.id.tv_subtitle);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(mRecyclerViewOnClickListenerHack != null) {
+                mRecyclerViewOnClickListenerHack.onClickListener(view, getPosition());
+            }
         }
     }
 

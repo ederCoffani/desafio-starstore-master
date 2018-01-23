@@ -1,7 +1,9 @@
 package br.com.coffani.starstore.feature.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.database.DatabaseManagerUser;
 import br.com.coffani.starstore.domain.User;
 import br.com.coffani.starstore.feature.home.MainActivity;
+import br.com.coffani.starstore.feature.introduction.IntroActivity;
 import br.com.coffani.starstore.feature.register.RegisterUserActivity;
 import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 import br.com.coffani.starstore.helper.Base64Custom;
@@ -39,24 +42,27 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private String password;
     private Cursor comprobar;
-//    private PreferenciasAndroid prefManager;
+    private SharedPreferences prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        prefManager = new PreferenciasAndroid(this);
-//        if (!prefManager.isFirstTimeLaunch()) {
-//            launchHomeScreen();
+////PERSISÊNCIA DE DADOS
+//        prefManager =  this.getSharedPreferences(
+//                "br.com.coffani.starstore", Context.MODE_PRIVATE);
+//
+//        boolean isUserLogin = prefManager.getBoolean("isUserLogin", true);
+//
+//        if (!isUserLogin) {
 //            finish();
 //        }
 
-//        // Making notification bar transparent
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//        }
-
+        // Making notification bar transparent
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
 
         eEmail = (EditText) findViewById(R.id.email_user);
         ePassword = (EditText) findViewById(R.id.password_user);
@@ -93,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Iniciando...");
         progressDialog.show();
-
+//        launchHomeScreen();
 
         final DatabaseManagerUser databaseManager = new DatabaseManagerUser(getApplicationContext());
 
@@ -107,13 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (databaseManager.comprobarRegistro(email)) {
                             comprobar = databaseManager.getDb().rawQuery("SELECT email, password FROM user" + " WHERE email='" + email + "' AND password='" + password + "'", null);
                             if (comprobar.moveToFirst()) {
-//
-//                                PreferenciasAndroid.saveSharedSetting(LoginActivity.this, "ClipCodes", "false");
-//                                PreferenciasAndroid.SharedPrefesSAVE(getApplicationContext(), eEmail.getText().toString());
-
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra("IDENT", email);
-                                startActivity(intent);
                                 finish();
                                 progressDialog.dismiss();
                             } else {
@@ -155,9 +156,12 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
+
 //    private void launchHomeScreen() {
-//        prefManager.setFirstTimeLaunch(false);
-//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//        prefManager.edit().putBoolean("isUserLogin",false).apply();
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        intent.putExtra("IDENT", email);
+//        startActivity(intent);
 //        finish();
 //    }
 

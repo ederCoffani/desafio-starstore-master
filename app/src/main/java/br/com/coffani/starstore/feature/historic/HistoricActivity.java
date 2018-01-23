@@ -1,44 +1,76 @@
 package br.com.coffani.starstore.feature.historic;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import java.util.List;
 
 import br.com.coffani.starstore.R;
-import br.com.coffani.starstore.adapter.MyHistoricRecyclerViewAdapter;
-import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
+import br.com.coffani.starstore.adapter.HistoricAdapter;
+import br.com.coffani.starstore.database.DatabaseManagerTransition;
+import br.com.coffani.starstore.domain.Historic;
 
 /**
  * Created by Coffani on 20/01/2018.
  */
 
-public class HistoricActivity extends Fragment {
+public class HistoricActivity extends AppCompatActivity {
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public HistoricActivity() {
-    }
+    private DatabaseManagerTransition managerTransition;
+    private RecyclerView recycler;
+    private HistoricAdapter adapter;
+    private RecyclerView.LayoutManager lManager;
+    private List<Historic> listaItemsCursos;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_historic_list, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.historic_list);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            NetworkConfigFirebase db = NetworkConfigFirebase.getInstance();
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyHistoricRecyclerViewAdapter());
-        }
-        return view;
+        managerTransition= new DatabaseManagerTransition(this);
+
+
+        inicializarRecicler();
     }
+    public void inicializarRecicler() {
+
+        listaItemsCursos = managerTransition.getHistoricsList();
+        // Obter Recycler
+        recycler = (RecyclerView) findViewById(R.id.list);
+        recycler.setHasFixedSize(true);
+        // Usar um administrador para LinearLayout
+        lManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(lManager);
+        // Crear un nuevo adaptador
+        adapter = new HistoricAdapter(listaItemsCursos, this);
+
+        recycler.setAdapter(adapter);
+
+
+        recycler.setItemAnimator(new DefaultItemAnimator());
+
+    }
+    private void recargarRecicler() {
+        //cargar datos
+        listaItemsCursos = managerTransition.getHistoricsList();
+        // Crear un nuevo adaptador
+        adapter = new HistoricAdapter(listaItemsCursos, this);
+        recycler.setAdapter(adapter);
+        recycler.setItemAnimator(new DefaultItemAnimator());
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        managerTransition.cargarCursor();
+
+        super.onDestroy();
+    }
+
 }

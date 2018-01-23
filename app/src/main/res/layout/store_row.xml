@@ -30,9 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imageV"
                 android:textAllCaps="true"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding"
+                android:paddingLeft="@dimen/item_title_padding"
+                android:paddingRight="@dimen/item_title_padding"
+                android:paddingTop="@dimen/item_title_padding"
                 android:textColor="@color/album_title"
                 android:textSize="@dimen/album_title"/>
 
@@ -42,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_title"
                 android:textAllCaps="true"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
+                android:paddingLeft="@dimen/item_title_padding"
+                android:paddingRight="@dimen/item_title_padding"
                 android:paddingTop="@dimen/album_subtitle_padding"
                 android:textColor="@color/album_title"
                 android:textSize="@dimen/album_title"/>

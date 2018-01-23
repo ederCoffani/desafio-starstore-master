@@ -3,14 +3,9 @@ package br.com.coffani.starstore.feature.home;
 import android.util.Log;
 
 import java.util.List;
-
-
-import br.com.coffani.starstore.base.ui.BaseActivity;
 import br.com.coffani.starstore.base.ui.BasePresenter;
 import br.com.coffani.starstore.domain.Product;
 import br.com.coffani.starstore.network.NetworkCallbak;
-import rx.Observable;
-
 /**
  * Created by Coffani on 19/01/2018.
  */

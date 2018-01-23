@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="br.com.coffani.starstore.feature.payment.PaymentActivity">
 
-    <include layout="@layout/toolbar_carrinho"></include>
+    <include layout="@layout/toolbar_cart"></include>
 
     <TextView
         android:id="@+id/tv_titulo"

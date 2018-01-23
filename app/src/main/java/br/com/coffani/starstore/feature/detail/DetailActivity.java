@@ -3,7 +3,6 @@ package br.com.coffani.starstore.feature.detail;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +29,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
     TextView tVendedor;
 
 
+
     @Override
     protected DetailPresenter createPresenter() {
         return null;
@@ -38,7 +38,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_do_item);
+        setContentView(R.layout.activity_item_view);
         ButterKnife.bind(this);
 
         if (getIntent() != null && getIntent().hasExtra("ITEM")) {
@@ -46,6 +46,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
 
             tValor.setText(String.valueOf(product.getValor()));
             Glide.with(DetailActivity.this).load(product.getUrlFoto()).into(tvImagemText);
+
             tTitulo.setText(product.getTitulo());
             tVendedor.setText(product.getLoja());
 
@@ -53,6 +54,13 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
                 @Override
                 public void onClick(View view) {
                     PaymentPresenter.getInstance().addItem(product);
+//                    String codigo;
+////                    cursor.moveToPosition(position);
+////                    codigo = cursor.getString(cursor.getColumnIndexOrThrow(CriaBanco.ID));
+////                    Intent intent = new Intent(DetailActivity.this, PaymentActivity.class);
+////                    intent.putExtra("codigo", codigo);
+////                    startActivity(intent);
+////                    finish();
                     finish();
                     Toast.makeText(DetailActivity.this, "Product adicionado!", Toast.LENGTH_SHORT).show();
                 }

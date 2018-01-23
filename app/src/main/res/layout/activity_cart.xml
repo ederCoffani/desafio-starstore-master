@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    tools:context="br.com.coffani.starstore.feature.payment.PaymentActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="517dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/carrinho_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/carrinho_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/carrinho_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:drawableLeft="@mipmap/ic_card_compras"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="36dp"
+                android:text="\nCOMPRAR"
+                android:textColor="@color/album_title"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="498dp" />
+
+            <TextView
+                android:id="@+id/carrinho_textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:text="Subtotal: $123.456,00"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/album_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/carrinho_button"
+                app:layout_constraintVertical_bias="0.538" />
+
+            <!--<Button-->
+            <!--android:id="@+id/carrinho_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:text="Comprar"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--tools:layout_editor_absoluteX="0dp" />-->
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

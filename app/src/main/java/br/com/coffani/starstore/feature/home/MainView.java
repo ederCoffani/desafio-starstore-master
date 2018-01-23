@@ -16,6 +16,6 @@ public interface MainView {
     void hideLoaging();
     void getDataSuccess(List<Product> pList);
     void getDataFail(String message);
-    void moveToDetail(Intent intent);
+    void initViews();
 
 }

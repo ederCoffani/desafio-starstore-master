@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "user.sqlite";
-    private static int DB_SCHEME_VERSION = 3;
+    private static final String DB_NAME = "starstore.sqlite";
+    private static int DB_SCHEME_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_SCHEME_VERSION);
@@ -21,6 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // crea tabla usuario
         db.execSQL(DatabaseManagerUser.CREATE_TABLE);
+        db.execSQL(DatabaseManagerTransition.CREATE_TABLE);
     }
 
     @Override

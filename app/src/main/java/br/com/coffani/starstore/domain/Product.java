@@ -3,7 +3,10 @@ package br.com.coffani.starstore.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.gson.annotations.SerializedName;
+
+import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 
 /**
  * Created by kaike on 22/09/2017.
@@ -124,6 +127,7 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+
 
 
 

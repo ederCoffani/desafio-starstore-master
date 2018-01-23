@@ -2,7 +2,9 @@ package br.com.coffani.starstore.feature.introduction;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.FloatRange;
@@ -25,7 +27,7 @@ import br.com.coffani.starstore.feature.login.LoginActivity;
  */
 
 public class IntroActivity extends MaterialIntroActivity {
-//    private PreferenciasAndroid prefManager;
+    private SharedPreferences prefManager;
 
     private String[] arrayPer = new String[]{
             Manifest.permission.INTERNET,
@@ -41,10 +43,16 @@ public class IntroActivity extends MaterialIntroActivity {
         super.onCreate(savedInstanceState);
         enableLastSlideAlphaExitTransition(true);
 
-//        prefManager = new PreferenciasAndroid(this);
-//        if (!prefManager.isFirstTimeLaunch()) {
-//            onFinish();
-//        }
+
+        //PERSISÊNCIA DE DADOS
+        prefManager =  this.getSharedPreferences(
+                "br.com.coffani.starstore", Context.MODE_PRIVATE);
+
+        boolean isFirstTimeLaunch = prefManager.getBoolean("isFirstTimeLaunch", true);
+
+        if (!isFirstTimeLaunch) {
+            onFinish();
+        }
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -99,7 +107,10 @@ public class IntroActivity extends MaterialIntroActivity {
     @Override
     public void onFinish() {
         super.onFinish();
-        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
+
+        prefManager.edit().putBoolean("isFirstTimeLaunch",false).apply();
+
+        startActivity(new Intent(IntroActivity.this, MainActivity.class));
         finish();
     }
 //    private void launchHomeScreen() {

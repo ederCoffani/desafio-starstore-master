@@ -1,38 +1,26 @@
 package br.com.coffani.starstore.feature.register;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.StorageReference;
-
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.database.DatabaseManagerUser;
-import br.com.coffani.starstore.domain.User;
 import br.com.coffani.starstore.feature.home.MainActivity;
 import br.com.coffani.starstore.feature.login.LoginActivity;
 
@@ -58,7 +46,7 @@ public class RegisterUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registro_user);
+        setContentView(R.layout.register_user);
 
         imageView = (ImageView) findViewById(R.id.usuario_imagen_registro);
         loginLink = (TextView)findViewById(R.id.link_login);

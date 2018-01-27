@@ -22,10 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:name="android.app.default_searchable"
+            android:value="br.com.coffani.starstore.feature.home.SearchMainActivity"/>
+
+        <provider
+            android:authorities="br.com.coffani.starstore.helper.SearchableProvider"
+            android:name="br.com.coffani.starstore.helper.SearchableProvider" />
+
+
+
         <activity
             android:name="br.com.coffani.starstore.feature.home.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/search"/>
+        </activity>
+
         <activity android:name=".base.ui.BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -46,6 +60,9 @@
         <activity android:name=".feature.historic.HistoricActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
     </application>
 
+
+    <!--android:windowSoftInputMode="adjustPan|adjustNothing"-->
 </manifest>

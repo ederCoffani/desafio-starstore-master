@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/iron"
+    android:orientation="vertical"
+    android:padding="1dp"
+    tools:context=".feature.payment.PaymentActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:gravity="center"
+    android:orientation="vertical">
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:textAlignment="center"
+        android:layout_marginTop="16dp"
+        >
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/martercard"
+            style="@style/MyRadioButton"
+            android:layout_marginTop="2dp"
+            />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/visa"
+            style="@style/MyRadioButton"
+            android:layout_marginTop="2dp" />
+
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/hipercard"
+            style="@style/MyRadioButton"
+            android:layout_marginTop="2dp" />
+
+
+    </RadioGroup>
+
+</LinearLayout>
+
+    <EditText
+        android:id="@+id/name_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:layout_marginTop="0sp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:background="@drawable/edt_cart"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/quatros_primeiros"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="4"
+            android:hint="XXXX"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:padding="10dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/edt_cart"
+            android:nextFocusRight="@+id/.."
+            />
+
+        <EditText
+            android:id="@+id/quatros_segundos"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="4"
+            android:hint="XXXX"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:padding="10dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/edt_cart"/>
+
+        <EditText
+            android:id="@+id/quatros_terceiros"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="4"
+            android:hint="XXXX"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:padding="10dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:layout_marginLeft="5sp"
+            android:background="@drawable/edt_cart"/>
+        <EditText
+            android:id="@+id/quatros_quartos"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="4"
+            android:hint="XXXX"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:padding="10dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:background="@drawable/edt_cart"/>
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/cvv_card"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:ems="3"
+        android:hint="CVV"
+        android:inputType="numberSigned"
+        android:maxLength="3"
+        android:padding="10dp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:background="@drawable/edt_cart"/>
+
+    <EditText
+        android:id="@+id/date_exp_card"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:maxLength="4"
+        android:inputType="time"
+        android:hint="06/24"
+        android:padding="10dp"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:background="@drawable/edt_cart"/>
+
+</LinearLayout>

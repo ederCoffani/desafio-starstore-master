@@ -19,7 +19,6 @@ public class MainPresenter extends BasePresenter<MainView>{
 
 
 
-
     void loadData(String offset){
         view.showLoading();
         addSubscribe( service.getListStore(offset), new NetworkCallbak<List<Product>>() {

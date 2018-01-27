@@ -14,13 +14,10 @@ import android.view.View;
 
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
-import agency.tango.materialintroscreen.MessageButtonBehaviour;
 import agency.tango.materialintroscreen.SlideFragmentBuilder;
 import agency.tango.materialintroscreen.animations.IViewTranslation;
 import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.feature.home.MainActivity;
-import br.com.coffani.starstore.feature.login.LoginActivity;
-//import br.com.coffani.starstore.helper.PreferenciasAndroid;
 
 /**
  * Created by Coffani on 21/01/2018.
@@ -113,12 +110,4 @@ public class IntroActivity extends MaterialIntroActivity {
         startActivity(new Intent(IntroActivity.this, MainActivity.class));
         finish();
     }
-//    private void launchHomeScreen() {
-//        prefManager.setFirstTimeLaunch(false);
-//        startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-//        finish();
-//    }
-
-
-
 }

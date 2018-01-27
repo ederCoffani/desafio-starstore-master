@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_historic_shopping"
+        android:id="@+id/nav_historic_shopping_db"
         android:icon="@drawable/ic_historic_compras"
         android:title="Historico de Compras" />
     <item
@@ -18,9 +18,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_config"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Config" />
+                android:id="@+id/intro"
+                android:icon="@drawable/ic_intro"
+                android:title="Introdução" />
             <item
                 android:id="@+id/nav_privacy_policy"
                 android:icon="@drawable/ic_privacy_policy"

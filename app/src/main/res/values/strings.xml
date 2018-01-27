@@ -8,5 +8,6 @@
     <string name="search_hint">Buscar Item</string>
     <string name="action_delete">Deletar Cache</string>
     <string name="buscar_item">Buscar Item</string>
+    <string name="title_activity_transition">Buscar</string>
 
 </resources>

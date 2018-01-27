@@ -43,4 +43,18 @@
         <item name="colorControlActivated">@android:color/white</item>
         <!-- item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewHoloLight</item -->
     </style>
+    <style name="MyRadioButton">
+        <!--//Checked color-->
+        <!--<item name="colorAccent">@color/colorFAB</item>-->
+        <!--<item name="android:textColor">@color/primary_text</item>-->
+        <!--//Checkbox border color-->
+        <!--<item name="android:textColorSecondary">@color/colorAccent</item>-->
+        <!--<item name="android:windowBackground">@color/colorFAB</item>-->
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/bg_toggle_checked</item>
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_margin">8dp</item>CRONÔMETRO
+    </style>
 </resources>

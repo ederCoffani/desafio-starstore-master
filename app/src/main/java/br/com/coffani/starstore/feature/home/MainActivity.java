@@ -1,42 +1,25 @@
 package br.com.coffani.starstore.feature.home;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +27,11 @@ import java.util.List;
 import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.adapter.StoreAdapter;
 import br.com.coffani.starstore.base.mvp.MvpActivity;
-import br.com.coffani.starstore.database.DatabaseManagerUser;
 import br.com.coffani.starstore.domain.Product;
-import br.com.coffani.starstore.domain.User;
-import br.com.coffani.starstore.feature.detail.DetailActivity;
 import br.com.coffani.starstore.feature.historic.HistoricActivity;
-import br.com.coffani.starstore.feature.login.LoginActivity;
+import br.com.coffani.starstore.feature.introduction.IntroActivity;
 import br.com.coffani.starstore.feature.payment.PaymentActivity;
-import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
-import br.com.coffani.starstore.helper.Base64Custom;
-//import br.com.coffani.starstore.helper.PreferenciasAndroid;
 import butterknife.ButterKnife;
-
-import static br.com.coffani.starstore.adapter.StoreAdapter.*;
 
 public class MainActivity extends MvpActivity<MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "LOJA";
@@ -66,14 +41,8 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     public List<Product> pList;
     private DrawerLayout drawer;
 
-    private DatabaseManagerUser databaseManagerUser;
-    private User itemUsuario;
-    private String ident;
 
     private ProgressDialog mProgressDialog;
-
-    private TextView text;
-
 
     @Override
     protected MainPresenter createPresenter() {
@@ -86,51 +55,16 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        checkUser();
 
         initViews();
         presenter.loadData(query);
-
-        //se agrego codigo del 39 al 68
-//        Bundle b = getIntent().getExtras();
-//
-//        ident = b.getString("IDENT");
-//
-//        databaseManagerUser = new DatabaseManagerUser(getApplicationContext());
-//        itemUsuario = databaseManagerUser.getUsuario(ident);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setNavigationViewListner();
 
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
-//
-//        ((TextView) header.findViewById(R.id.tv_nombre_usuario_menu)).setText(itemUsuario.getName());
-//        ((TextView) header.findViewById(R.id.tv_correo_menu)).setText(itemUsuario.getEmail());
-//
-//
-//        String idenficadorUsuario = Base64Custom.codificarBase64(itemUsuario.getName());
-//
-//        PreferenciasAndroid preferenciasAndroid = new PreferenciasAndroid(MainActivity.this);
-//        preferenciasAndroid.salvarUsuarioPrefencias(idenficadorUsuario, itemUsuario.getEmail());
 
-        Bitmap bitmapsinfoto = BitmapFactory.decodeResource(getResources(), R.drawable.imagen);
-        RoundedBitmapDrawable roundedBitmapDrawablesinfoto = RoundedBitmapDrawableFactory.create(getResources(), bitmapsinfoto);
-        roundedBitmapDrawablesinfoto.setCircular(true);
-
-        ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawablesinfoto);
-//        if (itemUsuario.getBytes() != null) {
-//            byte[] foodImage = itemUsuario.getBytes();
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
-//
-//            ((ImageView) header.findViewById(R.id.imageView)).setImageBitmap(bitmap);
-//
-//            Bitmap bitmap2 = ((BitmapDrawable) ((ImageView) header.findViewById(R.id.imageView)).getDrawable()).getBitmap();
-//            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap2);
-//            roundedBitmapDrawable.setCircular(true);
-//
-//            ((ImageView) header.findViewById(R.id.imageView)).setImageDrawable(roundedBitmapDrawable);
-//        }
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -141,7 +75,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         navigationView.setNavigationItemSelectedListener(this);
     }
     @Override
-    public void initViews() {
+    public void initViews(){
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -164,37 +98,11 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_searchable_activity, menu);
-
-        MenuItem search = menu.findItem(R.id.action_searchable_activity);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-        search(searchView);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-    private void search(SearchView searchView) {
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                if (storeAdapter != null) storeAdapter.getFilter().filter(newText);
-                return true;
-            }
-        });
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_carrinho) {
             startActivity(new Intent(MainActivity.this, PaymentActivity.class));
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -207,22 +115,17 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         hideProgressDialog();
     }
     @Override
-    public void getDataSuccess(List<Product> pList) {
+    public List<Product> getDataSuccess(List<Product> pList) {
         this.pList = pList;
         storeAdapter = new StoreAdapter(this, (ArrayList<Product>) pList);
         recyclerView.setAdapter(storeAdapter);
         storeAdapter.adicionarListaLoja((ArrayList<Product>) pList);
+        return pList;
     }
-
     @Override
     public void getDataFail(String message) {
-
-
+        Log.e(TAG, message);
     }
-
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -236,25 +139,23 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         switch (id) {
 
-            case R.id.nav_historic_shopping: {
+            case R.id.nav_historic_shopping_db: {
                 Toast.makeText(getApplicationContext(), "Historicos", Toast.LENGTH_SHORT).show();
                 Intent it =new Intent(getApplicationContext(), HistoricActivity.class);
                 startActivity(it);
                 break;
             }
             case R.id.menu_carrinho: {
-//                logout();
                 Toast.makeText(getApplicationContext(), "Carrinho", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, PaymentActivity.class));
 
                 break;
             }
-            case R.id.nav_config: {
-//                Intent it =new Intent(getApplicationContext(), HistoricActivity.class);
-//                startActivity(it);
+            case R.id.intro: {
+                Intent it =new Intent(getApplicationContext(), IntroActivity.class);
+                startActivity(it);
                 break;
             }
             case R.id.nav_privacy_policy: {
@@ -269,14 +170,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-//    private void logout() {
-//        PreferenciasAndroid.saveSharedSetting(MainActivity.this, "ClipCodes", "true");
-//        PreferenciasAndroid.SharedPrefesSAVE(getApplicationContext(), "");
-//        Intent LogOut = new Intent(getApplicationContext(), LoginActivity.class);
-//        startActivity(LogOut);
-//
-//        finish();
-//    }
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -322,13 +215,10 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-
-
     private void setNavigationViewListner() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
     protected void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -337,33 +227,16 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         }
         mProgressDialog.show();
     }
-
     protected void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         mProgressDialog.hide();
         super.onPause();
-
     }
-
-//    public void checkUser() {
-//
-//
-//        Boolean Check = Boolean.valueOf(PreferenciasAndroid.readSharedSetting(MainActivity.this, "ClipCodes", "true"));
-//
-//        Intent introIntent = new Intent(MainActivity.this, LoginActivity.class);
-//        introIntent.putExtra("ClipCodes", Check);
-//
-//        if (Check) {
-//            startActivity(introIntent);
-//        }
-//    }
-
 }
 

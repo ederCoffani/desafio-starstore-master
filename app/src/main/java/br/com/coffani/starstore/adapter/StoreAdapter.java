@@ -47,13 +47,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder>{
         final Product p = pList.get(position);
 
 
-        BigDecimal valor = new BigDecimal(p.getValor());
+        BigDecimal valor = new BigDecimal(p.getPrice());
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         String formatado = nf.format (valor);
-        holder.titleTv.setText(p.getTitulo());
+        holder.titleTv.setText(p.getTitle());
         holder.subtitleTv.setText(formatado);
         Glide.with(mContext)
-                .load(p.getUrlFoto())
+                .load(p.getThumbnailHd())
                 .centerCrop()
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

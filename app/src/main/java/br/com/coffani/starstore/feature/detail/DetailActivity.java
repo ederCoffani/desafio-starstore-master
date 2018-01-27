@@ -49,24 +49,16 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         if (getIntent() != null && getIntent().hasExtra("ITEM")) {
             final Product product = getIntent().getParcelableExtra("ITEM");
 
-            tValor.setText(String.valueOf(product.getValor()));
-            Glide.with(DetailActivity.this).load(product.getUrlFoto()).into(tvImagemText);
+            tValor.setText(String.valueOf(product.getPrice()));
+            Glide.with(DetailActivity.this).load(product.getThumbnailHd()).into(tvImagemText);
 
-            tTitulo.setText(product.getTitulo());
-            tVendedor.setText(product.getLoja());
+            tTitulo.setText(product.getTitle());
+            tVendedor.setText(product.getSeller());
 
             bt_payment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     PaymentPresenter.getInstance().addItem(product);
-//                    String codigo;
-////                    cursor.moveToPosition(position);
-////                    codigo = cursor.getString(cursor.getColumnIndexOrThrow(CriaBanco.ID));
-////                    Intent intent = new Intent(DetailActivity.this, PaymentActivity.class);
-////                    intent.putExtra("codigo", codigo);
-////                    startActivity(intent);
-////                    finish();
-
                     Toast.makeText(DetailActivity.this, "Product adicionado!", Toast.LENGTH_SHORT).show();
                     finish();
                 }

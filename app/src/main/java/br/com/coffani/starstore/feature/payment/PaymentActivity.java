@@ -24,6 +24,7 @@ import br.com.coffani.starstore.adapter.CartAdapter;
 import br.com.coffani.starstore.base.mvp.MvpActivity;
 import br.com.coffani.starstore.database.DatabaseManagerTransition;
 import br.com.coffani.starstore.domain.Card;
+import br.com.coffani.starstore.domain.Product;
 import br.com.coffani.starstore.feature.home.MainActivity;
 
 
@@ -98,6 +99,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         button_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 addPayment();
 
             }
@@ -107,6 +109,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
     public void addPayment() {
         if (!validar()) return;
+
         sName = name_card.getText().toString();
 
         sQuatrosPrimeiro = quatros_primeiro.getText().toString();
@@ -123,7 +126,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         progressDialog.setMessage("Post do Card...");
         progressDialog.show();
 
-            card = new Card();
+        card = new Card();
 
         card.setValue(PaymentPresenter.getInstance().getSubtotal());
         card.setCard_holder_name(name_card.getText().toString());
@@ -138,7 +141,6 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         registrarHistoric();
         card.salvar();
-
 
     }
 
@@ -225,6 +227,17 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             quatros_quarto.setError("*Number");
             cvv_card.setError("*Number");
             date_exp_card.setError("Exp");
+            valid = false;
+        }else if (quatros_primeiro.getText().length() <= 3 ||
+                quatros_primeiro.getText().length() <= 3 ||
+                quatros_primeiro.getText().length() <= 3 ||
+                quatros_primeiro.getText().length() <= 3 ||
+                cvv_card.getText().length() <=2){
+            quatros_primeiro.setError("*4");
+            quatros_segundo.setError("*4");
+            quatros_terceiro.setError("*4");
+            quatros_quarto.setError("*4");
+            cvv_card.setError("*3");
             valid = false;
         } else {
             name_card.setError(null);

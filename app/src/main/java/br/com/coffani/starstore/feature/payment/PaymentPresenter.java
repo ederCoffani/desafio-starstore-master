@@ -14,12 +14,11 @@ import br.com.coffani.starstore.domain.Product;
 
 public class PaymentPresenter extends BasePresenter<PaymentView> {
 
+    private static PaymentPresenter instance;
+    private ArrayList<Product> products = new ArrayList<>();
     PaymentPresenter(PaymentView view){
         super.attachView(view);
     }
-
-    private static PaymentPresenter instance;
-    private ArrayList<Product> products = new ArrayList<>();
 
     private PaymentPresenter() {
     }
@@ -35,24 +34,24 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
         products.add(product);
     }
 
-    public Card preparaPedido(String card_number, String cvv, String name, String expDate) {
-        Card card = new Card();
-
-        card.setCard_number(card_number);
-        card.setCard_holder_name(name);
-        card.setCvv(cvv);
-        card.setExp_date(expDate);
-        double total = getSubtotal();
-
-        card.setValue(total);
-        products.clear();
-        return card;
-    }
+//    public Card preparaPedido(String card_number, String cvv, String name, String expDate) {
+//        Card card = new Card();
+//
+//        card.setCard_number(card_number);
+//        card.setCard_holder_name(name);
+//        card.setCvv(cvv);
+//        card.setExp_date(expDate);
+//        double total = getSubtotal();
+//
+//        card.setValue(total);
+//        products.clear();
+//        return card;
+//    }
 
     public double getSubtotal() {
         double total = 0;
         for (Product i : products)
-            total += i.getValor();
+            total += i.getPrice();
         return total;
     }
 

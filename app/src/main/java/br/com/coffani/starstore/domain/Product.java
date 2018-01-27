@@ -3,118 +3,14 @@ package br.com.coffani.starstore.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.gson.annotations.SerializedName;
 
-import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 
 /**
- * Created by kaike on 22/09/2017.
+ * Created by Coffani on 22/09/2017.
  */
 
 public class Product implements Parcelable {
-
-    @SerializedName("title")
-    String titulo;
-    @SerializedName("price")
-    Double valor;
-    @SerializedName("zipcode")
-    String cep;
-    @SerializedName("seller")
-    String loja;
-    @SerializedName("thumbnailHd")
-    String urlFoto;
-    @SerializedName("date")
-    String data;
-
-
-    public Product() {
-
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public String getLoja() {
-        return loja;
-    }
-
-    public void setLoja(String loja) {
-        this.loja = loja;
-    }
-
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "titulo='" + titulo + '\'' +
-                ", valor=" + valor +
-                ", cep='" + cep + '\'' +
-                ", loja='" + loja + '\'' +
-                ", urlFoto='" + urlFoto + '\'' +
-                ", data='" + data + '\'' +
-                '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.titulo);
-        dest.writeValue(this.valor);
-        dest.writeString(this.cep);
-        dest.writeString(this.loja);
-        dest.writeString(this.urlFoto);
-        dest.writeString(this.data);
-    }
-
-    protected Product(Parcel in) {
-        this.titulo = in.readString();
-        this.valor = (Double) in.readValue(Double.class.getClassLoader());
-        this.cep = in.readString();
-        this.loja = in.readString();
-        this.urlFoto = in.readString();
-        this.data = in.readString();
-    }
 
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
         @Override
@@ -127,6 +23,106 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+    @SerializedName("title")
+    String title;
+    @SerializedName("price")
+    Double price;
+    @SerializedName("zipcode")
+    String zipcode;
+    @SerializedName("seller")
+    String seller;
+    @SerializedName("thumbnailHd")
+    String thumbnailHd;
+    @SerializedName("date")
+    String date;
+
+    public Product() {
+
+    }
+
+    protected Product(Parcel in) {
+        this.title = in.readString();
+        this.price = (Double) in.readValue(Double.class.getClassLoader());
+        this.zipcode = in.readString();
+        this.seller = in.readString();
+        this.thumbnailHd = in.readString();
+        this.date = in.readString();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String titulo) {
+        this.title = titulo;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double valor) {
+        this.price = valor;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String cep) {
+        this.zipcode = cep;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getThumbnailHd() {
+        return thumbnailHd;
+    }
+
+    public void setThumbnailHd(String thumbnailHd) {
+        this.thumbnailHd = thumbnailHd;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "title='" + title + '\'' +
+                ", price=" + price +
+                ", zipcode='" + zipcode + '\'' +
+                ", seller='" + seller + '\'' +
+                ", thumbnailHd='" + thumbnailHd + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeValue(this.price);
+        dest.writeString(this.zipcode);
+        dest.writeString(this.seller);
+        dest.writeString(this.thumbnailHd);
+        dest.writeString(this.date);
+    }
 
 
 

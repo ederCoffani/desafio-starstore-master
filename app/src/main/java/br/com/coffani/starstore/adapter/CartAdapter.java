@@ -17,7 +17,7 @@ import br.com.coffani.starstore.domain.Product;
 
 
 /**
- * Created by kaike on 23/09/2017.
+ * Created by Coffani on 23/09/2017.
  */
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {

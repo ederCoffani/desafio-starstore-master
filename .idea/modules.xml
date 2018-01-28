@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/desafio-mobile-master.iml" filepath="$PROJECT_DIR$/desafio-mobile-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desafio-starstore-master.iml" filepath="$PROJECT_DIR$/desafio-starstore-master.iml" />
     </modules>
   </component>
 </project>

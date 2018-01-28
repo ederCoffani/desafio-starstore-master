@@ -1,13 +1,16 @@
 package br.com.coffani.starstore.feature.detail;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 
@@ -40,14 +43,18 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         return null;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
         ButterKnife.bind(this);
 
+
+
         if (getIntent() != null && getIntent().hasExtra("ITEM")) {
             final Product product = getIntent().getParcelableExtra("ITEM");
+
 
             tValor.setText(String.valueOf(product.getPrice()));
             Glide.with(DetailActivity.this).load(product.getThumbnailHd()).into(tvImagemText);
@@ -74,6 +81,8 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override
@@ -86,23 +95,4 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
 
     }
 
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void getDataSucess(Product product) {
-
-    }
-
-    @Override
-    public void getDataFail(String message) {
-
-    }
-
-    @Override
-    public void refreshData() {
-
-    }
 }

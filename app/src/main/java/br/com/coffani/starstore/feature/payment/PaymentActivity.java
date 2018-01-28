@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,9 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
     private TextView textView_total;
     private Toolbar toolbar;
 
+    private ProgressDialog progressDialog;
+    private RecyclerView recyclerView;
+
     private CartAdapter adapter = new CartAdapter(this);
 
     private String sValue, sCvv, sDateExp, sDateTime, sDigits, sQuatrosPrimeiro, sQuatrosSegundos, sQuatrosTerceiros, sQuatrosQuartos, sName;
@@ -76,9 +80,12 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         card = new Card();
         textView_total = (TextView) findViewById(R.id.textView_total);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.cart_recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.cart_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+
+
 
         adapter.mostrasListaDeItens(PaymentPresenter.getInstance().getProducts());
         textView_total.setText(String.format("$%s", PaymentPresenter.getInstance().getSubtotal()));
@@ -101,10 +108,10 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             public void onClick(View v) {
 
                 addPayment();
+                recyclerView.clearOnChildAttachStateChangeListeners();
 
             }
         });
-
     }
 
     public void addPayment() {
@@ -120,7 +127,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         sCvv = cvv_card.getText().toString();
         sDateExp = date_exp_card.getText().toString();
 
-        final ProgressDialog progressDialog = new ProgressDialog(this,
+        progressDialog = new ProgressDialog(this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Post do Card...");
@@ -147,7 +154,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
     public void registrarHistoric() {
         if (!validar()) return;
 
-        final ProgressDialog progressDialog = new ProgressDialog(PaymentActivity.this,
+        progressDialog = new ProgressDialog(PaymentActivity.this,
                 R.style.AppTheme_Dark_Dialog);
 
         progressDialog.setIndeterminate(true);
@@ -191,6 +198,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
                 }, 3000);
 
     }
+
 
     @Override
     public void backhome() {
@@ -262,6 +270,14 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         }
         return true;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
 }

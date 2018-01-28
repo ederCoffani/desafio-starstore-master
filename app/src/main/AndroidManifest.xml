@@ -26,11 +26,6 @@
         <meta-data android:name="android.app.default_searchable"
             android:value="br.com.coffani.starstore.feature.home.SearchMainActivity"/>
 
-        <provider
-            android:authorities="br.com.coffani.starstore.helper.SearchableProvider"
-            android:name="br.com.coffani.starstore.helper.SearchableProvider" />
-
-
 
         <activity
             android:name="br.com.coffani.starstore.feature.home.MainActivity"

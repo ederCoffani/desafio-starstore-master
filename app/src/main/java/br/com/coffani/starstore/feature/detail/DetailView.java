@@ -11,8 +11,5 @@ import br.com.coffani.starstore.domain.Product;
 interface DetailView {
 
     void showLoading();
-    void hideLoading();
-    void getDataSucess(Product product);
-    void getDataFail(String message);
-    void refreshData();
+
 }

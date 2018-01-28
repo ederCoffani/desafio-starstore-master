@@ -17,23 +17,5 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
     void loadData(String offsat){
         view.showLoading();
-//        addSubscribe(service.getListStore(offsat), new NetworkCallbak<Product>() {
-//
-//
-//            @Override
-//            public void onSucsess(final Product model) {
-//                view.getDataSucess(model);
-//            }
-//
-//            @Override
-//            public void onFailure(String message) {
-//                view.getDataFail(message);
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                view.hideLoading();
-//            }
-//        });
     }
 }

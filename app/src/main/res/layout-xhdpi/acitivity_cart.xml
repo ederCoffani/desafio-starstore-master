@@ -25,33 +25,24 @@
         android:padding="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
+    <include android:id="@+id/cart"
+        layout="@layout/card_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        />
     <LinearLayout
-        android:id="@+id/rodape1"
+        android:id="@+id/rodape"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/card_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/card_content"
         android:gravity="center"
-        android:orientation="vertical"
+        android:padding="10dip"
         tools:ignore="UnknownId">
-        <include android:id="@+id/cart"
-            layout="@layout/card_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            />
-    <LinearLayout
-        android:id="@+id/rodape2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/rodape1"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/rodape1"
-        android:gravity="center"
-        android:orientation="horizontal"
-        tools:ignore="UnknownId">
+
         <Button
             android:id="@+id/button_payment"
             android:layout_width="wrap_content"
@@ -78,7 +69,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/carrinho_button"
             app:layout_constraintVertical_bias="0.538" />
-    </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
 

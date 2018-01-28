@@ -34,11 +34,11 @@ import br.com.coffani.starstore.feature.payment.PaymentActivity;
 import butterknife.ButterKnife;
 
 public class MainActivity extends MvpActivity<MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "LOJA";
+    private static final String TAG = "STORE";
+    public List<Product> pList;
     private String query = "products";
     private RecyclerView recyclerView;
     private StoreAdapter storeAdapter;
-    public List<Product> pList;
     private DrawerLayout drawer;
 
 
@@ -62,8 +62,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setNavigationViewListner();
-
-        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -170,6 +168,50 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    private void setNavigationViewListner() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    protected void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    protected void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mProgressDialog.hide();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -206,37 +248,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 }
             }
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-    private void setNavigationViewListner() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-    protected void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-        mProgressDialog.show();
-    }
-    protected void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mProgressDialog.hide();
-        super.onPause();
     }
 }
 

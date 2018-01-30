@@ -8,6 +8,7 @@ import br.com.coffani.starstore.network.NetworkCallbak;
 
 /**
  * Created by Coffani on 19/01/2018.
+ * PRESENTER CRIADO PARA USO FUTURO
  */
 
 public class DetailPresenter extends BasePresenter<DetailView> {

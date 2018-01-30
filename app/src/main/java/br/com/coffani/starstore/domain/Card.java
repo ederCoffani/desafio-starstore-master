@@ -17,6 +17,17 @@ import br.com.coffani.starstore.firebase.NetworkConfigFirebase;
 
 public class Card implements Parcelable {
 
+    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
+        @Override
+        public Card createFromParcel(Parcel source) {
+            return new Card(source);
+        }
+
+        @Override
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
     /**
      * card_number : 1234123412341234
      * value : 7990
@@ -37,6 +48,18 @@ public class Card implements Parcelable {
         this.cvv = cvv;
         this.card_holder_name = card_holder_name;
         this.exp_date = exp_date;
+    }
+
+    public Card() {
+    }
+
+    protected Card(Parcel in) {
+        this.id = in.readString();
+        this.card_number = in.readString();
+        this.value = in.readDouble();
+        this.cvv = in.readString();
+        this.card_holder_name = in.readString();
+        this.exp_date = in.readString();
     }
 
     public String getCard_number() {
@@ -79,12 +102,12 @@ public class Card implements Parcelable {
         this.exp_date = exp_date;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -101,30 +124,6 @@ public class Card implements Parcelable {
         dest.writeString(this.card_holder_name);
         dest.writeString(this.exp_date);
     }
-
-    public Card() {
-    }
-
-    protected Card(Parcel in) {
-        this.id = in.readString();
-        this.card_number = in.readString();
-        this.value = in.readDouble();
-        this.cvv = in.readString();
-        this.card_holder_name = in.readString();
-        this.exp_date = in.readString();
-    }
-
-    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
-        @Override
-        public Card createFromParcel(Parcel source) {
-            return new Card(source);
-        }
-
-        @Override
-        public Card[] newArray(int size) {
-            return new Card[size];
-        }
-    };
 
 //    public void salvar(){
 //        Card card = new Card(getId(), getCard_holder_name(), getValue(), getCvv(), getCard_number(), getExp_date());
@@ -145,20 +144,20 @@ public class Card implements Parcelable {
 //
 //    }
 
-    public void salvar() {
+    public void salvar() {//METODO PARA INSTANCIAR
        Card c = new Card();
 
 
-        DatabaseReference referenciaFirebase = NetworkConfigFirebase.getFirebase();
+        DatabaseReference referenciaFirebase = NetworkConfigFirebase.getFirebase();// REFERENCIA DO BANCO
 
-        String id = referenciaFirebase.push().getKey();
+        String id = referenciaFirebase.push().getKey();//ID DO CARD
         c.setId(id);
 
-        referenciaFirebase.child("payment").child(c.getId()).setValue(this);
+        referenciaFirebase.child("payment").child(c.getId()).setValue(this);// NODE A SER CRIADO
     }
 
     @Exclude
-    public Map<String, Object> toMap() {
+    public Map<String, Object> toMap() {//MAPEAMENTO DO OBJETO A SER INSERIDO NO DB FB
         HashMap<String, Object> hashMapPayment = new HashMap<>();
 
         hashMapPayment.put("id", getId());

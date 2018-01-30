@@ -11,4 +11,5 @@ import br.com.coffani.starstore.domain.Product;
 interface PaymentView {
     void addPayment();
     void backhome();
+    void registrarHistoric();
 }

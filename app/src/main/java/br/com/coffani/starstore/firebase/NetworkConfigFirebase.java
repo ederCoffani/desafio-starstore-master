@@ -16,44 +16,15 @@ import br.com.coffani.starstore.domain.Historic;
 
 public class NetworkConfigFirebase {
 
-    private static final NetworkConfigFirebase INSTANCE = new NetworkConfigFirebase();
-    private static final String TAG = "NetworkConfigFirebase";
-    private static DatabaseReference reference, referenceCard, referenceHistoric;
-    private FirebaseDatabase db;
-    private DatabaseReference historicRef;
-    private List<Historic> historics;
-    private DatabaseReference mMovieRef;
-
+    private static DatabaseReference reference;
 
     private NetworkConfigFirebase() {
 
     }
-
     public static DatabaseReference getFirebase() {
         if (reference == null) {
             reference = FirebaseDatabase.getInstance().getReference();
         }
         return reference;
     }
-
-    public static DatabaseReference getReferenceCard() {
-        if (referenceCard == null) {
-            referenceCard = FirebaseDatabase.getInstance().getReference("cards");
-        }
-        return reference;
-    }
-
-    public static NetworkConfigFirebase getInstance() {
-        return INSTANCE;
-    }
-
-    public void addHistoric(Historic h) {
-        historicRef.push().setValue(h);
-    }
-
-    public List<Historic> getHistoricList() {
-        return historics;
-    }
-
-
 }

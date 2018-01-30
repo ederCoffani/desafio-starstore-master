@@ -1,9 +1,11 @@
 package br.com.coffani.starstore.feature.payment;
 
+import android.app.ProgressDialog;
 import android.view.View;
 
 import java.util.ArrayList;
 
+import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.base.ui.BasePresenter;
 import br.com.coffani.starstore.domain.Card;
 import br.com.coffani.starstore.domain.Product;
@@ -16,7 +18,9 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
 
     private static PaymentPresenter instance;
     private ArrayList<Product> products = new ArrayList<>();
-    PaymentPresenter(PaymentView view){
+
+
+    PaymentPresenter(PaymentView view) {
         super.attachView(view);
     }
 
@@ -33,20 +37,6 @@ public class PaymentPresenter extends BasePresenter<PaymentView> {
     public void addItem(Product product) {
         products.add(product);
     }
-
-//    public Card preparaPedido(String card_number, String cvv, String name, String expDate) {
-//        Card card = new Card();
-//
-//        card.setCard_number(card_number);
-//        card.setCard_holder_name(name);
-//        card.setCvv(cvv);
-//        card.setExp_date(expDate);
-//        double total = getSubtotal();
-//
-//        card.setValue(total);
-//        products.clear();
-//        return card;
-//    }
 
     public double getSubtotal() {
         double total = 0;

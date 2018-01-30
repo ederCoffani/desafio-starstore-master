@@ -3,9 +3,7 @@ package br.com.coffani.starstore.base.ui;
 import android.util.Log;
 
 import br.com.coffani.starstore.network.NetworkClient;
-import br.com.coffani.starstore.network.StoreService;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

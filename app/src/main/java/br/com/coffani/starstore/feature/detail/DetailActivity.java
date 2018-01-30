@@ -36,8 +36,6 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
     @BindView(R.id.tv_vendedor)
     TextView tVendedor;
 
-
-
     @Override
     protected DetailPresenter createPresenter() {
         return null;
@@ -49,10 +47,8 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
         ButterKnife.bind(this);
-
-
-
-        if (getIntent() != null && getIntent().hasExtra("ITEM")) {
+        //TRANFERIDO OS DADOS OBTIDOS POR DETALES VINDOS DA INTENT DA CLASS STOREADAPTER
+        if (getIntent() != null && getIntent().hasExtra("ITEM")) {//REFERENCIA ITEM
             final Product product = getIntent().getParcelableExtra("ITEM");
 
 
@@ -61,7 +57,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
 
             tTitulo.setText(product.getTitle());
             tVendedor.setText(product.getSeller());
-
+            //CLIC PARA ADIONAR AO CARRINHO
             bt_payment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -70,7 +66,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
                     finish();
                 }
             });
-        } else {
+        } else {// SE A INTENT NÃO ACONTECER POSSA A SER QUE A REFERENCIA ESTEJA ERRADA ENTÃO NADA ACONTECE
             Toast.makeText(this, "Nada para mostrar :(", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -92,7 +88,7 @@ public class DetailActivity extends MvpActivity<DetailPresenter> implements Deta
 
     @Override
     public void showLoading() {
-
+    //PODERIA COLOCAR UM PROGRESSBAR COM ALGUMA MENSAGEM
     }
 
 }

@@ -1,4 +1,4 @@
-package br.com.coffani.starstore.network;
+package br.com.coffani.starstore.base.ui;
 
 import java.util.ArrayList;
 
@@ -8,12 +8,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
-
-/**
- * Created by coffani on 21/09/2017.
- */
-//@Query("limit") int limit,
+//CRIADO UM ASSINATURA OU RECURSO PARA COM A URL
 public interface StoreService {
-    @GET("products")
+    @GET("products")//SERA CHAMADO ASSINCRONA DO PRODUTO UNINDO COM A URL BASE QUE SE ENCONTRA NO BUILD DA APP....
     Observable<ArrayList<Product>> getListStore(@Query("offset") String offset);
 }

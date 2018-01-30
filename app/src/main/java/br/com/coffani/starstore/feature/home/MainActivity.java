@@ -30,6 +30,7 @@ import br.com.coffani.starstore.base.mvp.MvpActivity;
 import br.com.coffani.starstore.domain.Product;
 import br.com.coffani.starstore.feature.historic.HistoricActivity;
 import br.com.coffani.starstore.feature.introduction.IntroActivity;
+import br.com.coffani.starstore.feature.introduction.IntroActivityTwo;
 import br.com.coffani.starstore.feature.payment.PaymentActivity;
 import butterknife.ButterKnife;
 
@@ -40,8 +41,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     private RecyclerView recyclerView;
     private StoreAdapter storeAdapter;
     private DrawerLayout drawer;
-
-
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -49,36 +48,43 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
 
         return new MainPresenter(this);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initViews();
+        //PRESENTER INTERAGINDO COM A VIEW
         presenter.loadData(query);
-
+        //INICIANDO A TOOLBAR
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setNavigationViewListner();
-
+        //INICIANO O NAVIGATION DRAWER
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(// ANIMAÇÃO DO HUMBURGUER
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        //CAPITAÇÃO DO ITEM
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-    @Override
-    public void initViews(){
+    @Override//MENU MAIN
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_carrinho) {
+            startActivity(new Intent(MainActivity.this, PaymentActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override//INICIANDO AS VIEWS
+    public void showLoading() {
+        showProgressDialog();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
-
+        //CRIAÇÃO EM GRIDE
         final LinearLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));//DUAS COLUNAS CONTENDO DEZ PRODUTOS
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -94,30 +100,16 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             }
         });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_carrinho) {
-            startActivity(new Intent(MainActivity.this, PaymentActivity.class));
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-    @Override
-    public void showLoading() {
-        showProgressDialog();
-    }
     @Override
     public void hideLoaging() {
-        hideProgressDialog();
+        hideProgressDialog();//INIT PROGRESS
     }
     @Override
-    public List<Product> getDataSuccess(List<Product> pList) {
+    public List<Product> getDataSuccess(List<Product> pList) {// LISTAGEM DE ITENS
         this.pList = pList;
-        storeAdapter = new StoreAdapter(this, (ArrayList<Product>) pList);
+        storeAdapter = new StoreAdapter(this, (ArrayList<Product>) pList);// ADAPTADOR DO CARDVIEW
         recyclerView.setAdapter(storeAdapter);
-        storeAdapter.adicionarListaLoja((ArrayList<Product>) pList);
+        storeAdapter.adicionarListaLoja((ArrayList<Product>) pList);// ADICIONANDO  LISTA
         return pList;
     }
     @Override
@@ -125,7 +117,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         Log.e(TAG, message);
     }
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {//PRECIONANDO O NAVIGATION DRAWER
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -133,7 +125,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             super.onBackPressed();
         }
     }
-    @Override
+    @Override//SELECIONANDO ITEM NAVIGATION DRAWER
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -152,7 +144,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 break;
             }
             case R.id.intro: {
-                Intent it =new Intent(getApplicationContext(), IntroActivity.class);
+                Intent it =new Intent(getApplicationContext(), IntroActivityTwo.class);
                 startActivity(it);
                 break;
             }
@@ -168,27 +160,39 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mProgressDialog.hide();
+    }
+    @Override
+    public void onDestroy() {//DEPOIS DE FEITO É DESTRUIDO, 'NÃO TIRAR SE NÃO DA PROBLEMA'
+        super.onDestroy();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
     /**
      * Converting dp to pixel
      */
-    private int dpToPx(int dp) {
+    private int dpToPx(int dp) {//REFERENCIANDO O DP DO PX, FAZENDO A MATRIZ DO DISPLAY
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void setNavigationViewListner() {
+    private void setNavigationViewListner() {// LISTNER DA VIEW DO NAVIGATION DRAWER
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    protected void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+    protected void showProgressDialog() {//INICIO DO DIALOG DO PROGRESS
+        if (mProgressDialog == null) {//PROGRESS NULO ENTÃO
+            mProgressDialog = new ProgressDialog(this);//CRIANDO UMA NOVA INSTANCIA DO PROGUES DE ACORDO COM O CONTEXT DA CLASS
+            mProgressDialog.setMessage(getString(R.string.loading));// MESSAGE
+            mProgressDialog.setIndeterminate(true);//PODE SER INDETERMINADO SE NÃO INTERROMPIDO
         }
-        mProgressDialog.show();
+        mProgressDialog.show();// SE NADA ACONTECER ELE É INICIADO
     }
 
     protected void hideProgressDialog() {
@@ -196,22 +200,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             mProgressDialog.hide();
         }
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mProgressDialog.hide();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
-
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */

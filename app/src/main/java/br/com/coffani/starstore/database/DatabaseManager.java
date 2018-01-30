@@ -25,18 +25,18 @@ public abstract class DatabaseManager {
     abstract public void eliminar(String id);
     abstract public void eliminarTodo();
     abstract public Cursor cargarCursor();
-    abstract boolean comprobarRegistro(String id);
+//    abstract boolean comprobarRegistro(String id);
 
     public DatabaseHelper getHelper() {
         return helper;
     }
 
-    public SQLiteDatabase getDb() {
-        return db;
-    }
-
     public void setHelper(DatabaseHelper helper) {
         this.helper = helper;
+    }
+
+    public SQLiteDatabase getDb() {
+        return db;
     }
 
     public void setDb(SQLiteDatabase db) {

@@ -55,6 +55,7 @@
         <activity android:name=".feature.historic.HistoricActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".feature.introduction.IntroActivityTwo" />
 
     </application>
 

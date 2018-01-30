@@ -77,6 +77,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
         getSupportActionBar().setTitle("Pagamentos");
 
+        //INTANCIANDO O OBJETO
         card = new Card();
         textView_total = (TextView) findViewById(R.id.textView_total);
 
@@ -86,7 +87,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
 
 
-
+        //ADAPTANDO OS PRODUTOS NO RECYCLER VIEW
         adapter.mostrasListaDeItens(PaymentPresenter.getInstance().getProducts());
         textView_total.setText(String.format("$%s", PaymentPresenter.getInstance().getSubtotal()));
 
@@ -105,7 +106,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         button_payment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//CLICK NO BOTÃO DE PAGAMENTO
 
                 addPayment();
                 recyclerView.clearOnChildAttachStateChangeListeners();
@@ -115,7 +116,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
     }
 
     public void addPayment() {
-        if (!validar()) return;
+        if (!validar()) return;//SE A VALIDAÇÃO DER CERTO É INSERIDO OS PRODUTOS NO DB SQLITE E NO DB FB
 
         sName = name_card.getText().toString();
 
@@ -131,59 +132,60 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Post do Card...");
-        progressDialog.show();
+        progressDialog.show();//POSTANDO A COMPRA
 
-        card = new Card();
+        card = new Card();//INSTANCIA
 
-        card.setValue(PaymentPresenter.getInstance().getSubtotal());
-        card.setCard_holder_name(name_card.getText().toString());
+        card.setValue(PaymentPresenter.getInstance().getSubtotal());//VALOR
+        card.setCard_holder_name(name_card.getText().toString());//NOME
 
-        card.setCard_number(quatros_primeiro.getText().toString()
+        card.setCard_number(quatros_primeiro.getText().toString()//CRIAÇÃO DOS 16 NUMEROS DO CARTÃO
                 + quatros_segundo.getText().toString()
                 + quatros_terceiro.getText().toString()
                 + quatros_quarto.getText().toString());
 
-        card.setCvv(cvv_card.getText().toString());
-        card.setExp_date(date_exp_card.getText().toString());
+        card.setCvv(cvv_card.getText().toString());//CODIGO DE VERIFICAÇÃO
+        card.setExp_date(date_exp_card.getText().toString());//DATA EXPEDIDORA
 
-        registrarHistoric();
-        card.salvar();
+        registrarHistoric();// INSERINDO NO DB SQLITE
+        card.salvar();//POST DO CARTÃO PARA O DB FB
+        backhome();//SE TUDO DER CERTO VOLTA PARA MAIN
 
     }
-
+    @Override
     public void registrarHistoric() {
-        if (!validar()) return;
+        if (!validar()) return;//SE DER TUDO CERTO
 
         progressDialog = new ProgressDialog(PaymentActivity.this,
                 R.style.AppTheme_Dark_Dialog);
 
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Eviando dados do cliente...");
-        progressDialog.show();
+        progressDialog.show();//MESAGE DE DIALOG
 
 
-        Date dataHoraAtual = new Date();
+        Date dataHoraAtual = new Date();// CRIANDO A DATA E A HORA E PEGANDO DO DISPOSITIVO
         @SuppressLint("SimpleDateFormat") String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
         @SuppressLint("SimpleDateFormat") String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
 
         sValue = textView_total.getText().toString();
-        sDateTime = hora + " - " + data;
+        sDateTime = hora + " - " + data;// HORA E DATA
         sName = name_card.getText().toString();
-
+        //4X4 = 16 NUMEROS DO CARTÃ0
         sQuatrosPrimeiro = quatros_primeiro.getText().toString();
         sQuatrosSegundos = quatros_segundo.getText().toString();
         sQuatrosTerceiros = quatros_terceiro.getText().toString();
         sQuatrosQuartos = quatros_quarto.getText().toString();
 
-        sCvv = cvv_card.getText().toString();
-        sDateExp = date_exp_card.getText().toString();
+        sCvv = cvv_card.getText().toString();//CODIGO DE VERIFICAÇÃO
+        sDateExp = date_exp_card.getText().toString();// DATA EXPEDIDORA
 
-        managerTransition = new DatabaseManagerTransition(this);
+        managerTransition = new DatabaseManagerTransition(this);//CRIANDO UMA INSTANCIA DA CLASSE DE TRANSIÇÃO
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-
+                        // SE FOR VALIDO ENTRA AQUI E INSERI E MOSTRA QUE FOI FEITA E O NOME O DONO DO CARTÃO
                         managerTransition.insertar_parametros(null, sQuatrosQuartos, sDateTime, sValue, sName);
                         Log.e("Iserindo: ", managerTransition.getHistoricsList().toString());
                         Toast.makeText(getBaseContext(), "Transação feita por " + sName + " foi salva no BBDD", Toast.LENGTH_LONG).show();
@@ -201,14 +203,14 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
 
     @Override
-    public void backhome() {
+    public void backhome() {//INTENT PARA MAIN
         Intent it = new Intent(this, MainActivity.class);
         startActivity(it);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
-
-    private boolean validar() {
-        boolean valid = true;
+    //METODO DE VALIDAÇÃO
+    public boolean validar() {
+        boolean valid = true;//VALIDO TEM QUE SER VERDADEIRO
 
 
         sName = name_card.getText().toString();
@@ -220,7 +222,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         sCvv = cvv_card.getText().toString();
         sDateExp = date_exp_card.getText().toString();
-
+        //SE O COMPRIMENTO DO TEXT FOI IGUAL A 0 OU VAZIO ENTÃO FALSO E NÃO É VALIDO
         if (name_card.getText().length() == 0 || name_card.getText().toString().equals("") &&
                 quatros_primeiro.getText().length() == 0 || quatros_primeiro.getText().toString().equals("") &&
                 quatros_segundo.getText().length() == 0 || quatros_segundo.getText().toString().equals("") &&
@@ -236,7 +238,9 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             cvv_card.setError("*Number");
             date_exp_card.setError("Exp");
             valid = false;
-        }else if (quatros_primeiro.getText().length() <= 3 ||
+
+        }//SE NÃO SE OS 4X4 = 16 FOREM MENOR OU IGUAL A 3 OU CODIGO DE VERIFICAÇÃO FOR MENOR IGUAL A 2 É FALSO TAMBEM
+        else if (quatros_primeiro.getText().length() <= 3 ||
                 quatros_primeiro.getText().length() <= 3 ||
                 quatros_primeiro.getText().length() <= 3 ||
                 quatros_primeiro.getText().length() <= 3 ||
@@ -247,7 +251,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             quatros_quarto.setError("*4");
             cvv_card.setError("*3");
             valid = false;
-        } else {
+        } else {//SE FOR VERDADEIRO ENTRA AQUI
             name_card.setError(null);
             quatros_primeiro.setError(null);
             quatros_segundo.setError(null);
@@ -258,7 +262,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         }
         return valid;
     }
-    @Override
+    @Override//VOLTAR
     public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
@@ -271,7 +275,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         }
         return true;
     }
-    @Override
+    @Override// DEPOIS DE CONCLUIDO O PROGRESS É DESTRUIDO
     public void onDestroy() {
         super.onDestroy();
         if (progressDialog != null) {

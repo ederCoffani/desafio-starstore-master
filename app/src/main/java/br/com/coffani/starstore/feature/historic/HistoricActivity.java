@@ -20,17 +20,17 @@ import br.com.coffani.starstore.domain.Historic;
 
 public class HistoricActivity extends AppCompatActivity {
 
-    private DatabaseManagerTransition managerTransition;
+    private DatabaseManagerTransition managerTransition;//TRANSIÇÃO COM O DB SQLITE
     private RecyclerView recycler;
     private HistoricAdapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private List<Historic> listaItemsCursos;
+    private List<Historic> listaItemsCursos;//LISTA DE TRANSIÇÃO
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.historic_list);
-
+        //ESTANCIA DA CLASS GERENCIADORA DA TRANSIÇÃO
         managerTransition= new DatabaseManagerTransition(this);
 
 
@@ -45,7 +45,7 @@ public class HistoricActivity extends AppCompatActivity {
         // Usar um administrador para LinearLayout
         lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
-        // Crear un nuevo adaptador
+        // Criar un novo adaptador
         adapter = new HistoricAdapter(listaItemsCursos, this);
 
         recycler.setAdapter(adapter);
@@ -54,22 +54,9 @@ public class HistoricActivity extends AppCompatActivity {
         recycler.setItemAnimator(new DefaultItemAnimator());
 
     }
-    private void recargarRecicler() {
-        //cargar datos
-        listaItemsCursos = managerTransition.getHistoricsList();
-        // Crear un nuevo adaptador
-        adapter = new HistoricAdapter(listaItemsCursos, this);
-        recycler.setAdapter(adapter);
-        recycler.setItemAnimator(new DefaultItemAnimator());
-
-    }
-
-
     @Override
     protected void onDestroy() {
-
         managerTransition.cargarCursor();
-
         super.onDestroy();
     }
 

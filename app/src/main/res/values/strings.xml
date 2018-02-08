@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StarStore</string>
+    <string name="app_name">Star Store</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,5 +9,9 @@
     <string name="action_delete">Deletar Cache</string>
     <string name="buscar_item">Buscar Item</string>
     <string name="title_activity_transition">Buscar</string>
+    <string name="get_offer">Ver Oferta</string>
+    <string name="view_all_offers">Ver todas as ofertas</string>
+    <string name="name_product">Nome Produto</string>
+    <string name="value_product">Valor do produto</string>
 
 </resources>

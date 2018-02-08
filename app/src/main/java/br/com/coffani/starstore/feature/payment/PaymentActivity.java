@@ -3,30 +3,36 @@ package br.com.coffani.starstore.feature.payment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import br.com.coffani.starstore.R;
 import br.com.coffani.starstore.adapter.CartAdapter;
+import br.com.coffani.starstore.adapter.CustomArrayAdapter;
 import br.com.coffani.starstore.base.mvp.MvpActivity;
 import br.com.coffani.starstore.database.DatabaseManagerTransition;
 import br.com.coffani.starstore.domain.Card;
-import br.com.coffani.starstore.domain.Product;
+import br.com.coffani.starstore.domain.SpinnerObject;
 import br.com.coffani.starstore.feature.home.MainActivity;
+
+import static br.com.coffani.starstore.feature.payment.PaymentPresenter.*;
 
 
 /**
@@ -35,6 +41,10 @@ import br.com.coffani.starstore.feature.home.MainActivity;
 
 public class PaymentActivity extends MvpActivity<PaymentPresenter> implements PaymentView {
 
+    public ArrayList<SpinnerObject> CustomListViewValuesArr = new ArrayList<SpinnerObject>();
+    CustomArrayAdapter adapterC;
+    private Spinner spinner;
+    private TextView parcelas_card;
     private EditText name_card;
     private EditText quatros_primeiro;
     private EditText quatros_segundo;
@@ -45,18 +55,13 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
     private Button button_payment;
     private TextView textView_total;
     private Toolbar toolbar;
-
     private ProgressDialog progressDialog;
     private RecyclerView recyclerView;
-
     private CartAdapter adapter = new CartAdapter(this);
-
     private String sValue, sCvv, sDateExp, sDateTime, sDigits, sQuatrosPrimeiro, sQuatrosSegundos, sQuatrosTerceiros, sQuatrosQuartos, sName;
-
+    private String div;
     private Card card;
-
     private DatabaseManagerTransition managerTransition;
-
 
     @Override
     protected PaymentPresenter createPresenter() {
@@ -69,27 +74,26 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(R.color.colorBlanco);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
         getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
         getSupportActionBar().setTitle("Pagamentos");
 
-        //INTANCIANDO O OBJETO
+                //INTANCIANDO O OBJETO
         card = new Card();
         textView_total = (TextView) findViewById(R.id.textView_total);
 
         recyclerView = (RecyclerView) findViewById(R.id.cart_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
+        initCustomSpinner();
 
 
         //ADAPTANDO OS PRODUTOS NO RECYCLER VIEW
         adapter.mostrasListaDeItens(PaymentPresenter.getInstance().getProducts());
         textView_total.setText(String.format("$%s", PaymentPresenter.getInstance().getSubtotal()));
+        card.setValue(getInstance().getSubtotal());//VALOR
 
 
         name_card = ((EditText) findViewById(R.id.name_card));
@@ -108,9 +112,13 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             @Override
             public void onClick(View v) {//CLICK NO BOTÃO DE PAGAMENTO
 
-                addPayment();
-                recyclerView.clearOnChildAttachStateChangeListeners();
-
+                if (getInstance().getSubtotal() == 0.0){
+                    Toast.makeText(PaymentActivity.this, "Adicione um produto", Toast.LENGTH_SHORT).show();
+                }else {
+                    addPayment();
+                    recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+                    recyclerView.getRecycledViewPool().clear();
+                }
             }
         });
     }
@@ -136,7 +144,7 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         card = new Card();//INSTANCIA
 
-        card.setValue(PaymentPresenter.getInstance().getSubtotal());//VALOR
+        card.setValue(getInstance().getSubtotal());//VALOR
         card.setCard_holder_name(name_card.getText().toString());//NOME
 
         card.setCard_number(quatros_primeiro.getText().toString()//CRIAÇÃO DOS 16 NUMEROS DO CARTÃO
@@ -200,6 +208,41 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
                 }, 3000);
 
     }
+    private void initCustomSpinner() {
+        parcelas_card = (TextView)findViewById(R.id.parcelas_card);
+        spinner = (Spinner)findViewById(R.id.spinner);
+
+        CustomListViewValuesArr.add(0,new SpinnerObject("Xx"));
+        CustomListViewValuesArr.add(1,new SpinnerObject("1x"));
+        CustomListViewValuesArr.add(2,new SpinnerObject("2x"));
+        CustomListViewValuesArr.add(3,new SpinnerObject("3x"));
+        CustomListViewValuesArr.add(4,new SpinnerObject("4x"));
+        CustomListViewValuesArr.add(5,new SpinnerObject("5x"));
+        CustomListViewValuesArr.add(6,new SpinnerObject("6x"));
+        CustomListViewValuesArr.add(7,new SpinnerObject("7x"));
+
+        Resources res = getResources();
+        adapterC = new CustomArrayAdapter(this, R.layout.spinner_dropdown, CustomListViewValuesArr, res);
+        spinner.setAdapter(adapterC);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+
+                    parcelas_card.setText( ((SpinnerObject)spinner.getSelectedItem()).getname() + card.getValue()/position);
+                    TextView txt = (TextView) view.findViewById(R.id.dropdown_txt);
+                    String text = txt.getText().toString();
+                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });    }
 
 
     @Override
@@ -241,9 +284,9 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
 
         }//SE NÃO SE OS 4X4 = 16 FOREM MENOR OU IGUAL A 3 OU CODIGO DE VERIFICAÇÃO FOR MENOR IGUAL A 2 É FALSO TAMBEM
         else if (quatros_primeiro.getText().length() <= 3 ||
-                quatros_primeiro.getText().length() <= 3 ||
-                quatros_primeiro.getText().length() <= 3 ||
-                quatros_primeiro.getText().length() <= 3 ||
+                quatros_segundo.getText().length() <= 3 ||
+                quatros_terceiro.getText().length() <= 3 ||
+                quatros_quarto.getText().length() <= 3 ||
                 cvv_card.getText().length() <=2){
             quatros_primeiro.setError("*4");
             quatros_segundo.setError("*4");
@@ -283,5 +326,4 @@ public class PaymentActivity extends MvpActivity<PaymentPresenter> implements Pa
             progressDialog = null;
         }
     }
-
 }

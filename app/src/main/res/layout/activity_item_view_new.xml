@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    tools:context="br.com.coffani.starstore.feature.payment.PaymentActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include
+        android:id="@+id/tb_detail"
+        layout="@layout/toolbar" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tb_detail"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/fotoImageView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="6dp"
+            android:src="@null" />
+
+        <TextView
+            android:id="@+id/tv_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@+id/fotoImageView"
+            android:background="@color/accent"
+            android:paddingRight="16dp"
+            android:text="Titulo"
+            android:textColor="@color/colorPrimarytext"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_vendedor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_titulo"
+            android:layout_below="@+id/tv_titulo"
+            android:paddingRight="16dp"
+            android:text="Store"
+            android:textColor="@color/colorPrimarytext"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_valor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_vendedor"
+            android:layout_below="@+id/tv_vendedor"
+            android:text="$2,100,000"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimarytext"
+            android:textSize="14dp" />
+
+        <View
+            android:id="@+id/vw_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:layout_below="@+id/fotoImageView"
+            android:layout_marginTop="20dp"
+            android:background="@color/iron" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rodape"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="10dip">
+
+
+        <Button
+            android:id="@+id/bt_adicionar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingBottom="15dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"
+            android:text="\nComprar"
+
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="498dp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

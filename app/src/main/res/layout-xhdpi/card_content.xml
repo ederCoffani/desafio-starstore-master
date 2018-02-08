@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@color/iron"
     android:orientation="vertical"
-    android:padding="1dp"
     tools:context=".feature.payment.PaymentActivity">
 
     <LinearLayout
@@ -26,7 +26,7 @@
                 style="@style/MyRadioButton"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/martercard"
                 />
 
@@ -35,7 +35,7 @@
                 style="@style/MyRadioButton"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/visa" />
 
 
@@ -44,13 +44,62 @@
                 style="@style/MyRadioButton"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/hipercard" />
 
 
         </RadioGroup>
 
     </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight=".28"
+        android:background="@drawable/background_spinner"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:background="@android:color/transparent"
+            android:gravity="left"
+            android:spinnerMode="dropdown" />
+
+        <!--<ImageView-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/ic_action_drop"--> />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/parcelas_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="$0.000.000"
+        android:textColor="@color/album_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cart"
+        app:layout_constraintVertical_bias="0.538" />
+</LinearLayout>
+
+
 
     <EditText
         android:id="@+id/name_card"

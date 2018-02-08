@@ -21,7 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.coffani.starstore.R;
@@ -34,9 +41,11 @@ import br.com.coffani.starstore.feature.introduction.IntroActivityTwo;
 import br.com.coffani.starstore.feature.payment.PaymentActivity;
 import butterknife.ButterKnife;
 
-public class MainActivity extends MvpActivity<MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends MvpActivity<MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
     private static final String TAG = "STORE";
     public List<Product> pList;
+    private SliderLayout sliderLayout;
+    private HashMap<String, Integer> sliderImages;
     private String query = "products";
     private RecyclerView recyclerView;
     private StoreAdapter storeAdapter;
@@ -53,7 +62,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         //PRESENTER INTERAGINDO COM A VIEW
         presenter.loadData(query);
         //INICIANDO A TOOLBAR
@@ -69,6 +77,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         //CAPITAÇÃO DO ITEM
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
     @Override//MENU MAIN
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -77,9 +86,13 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         }
         return super.onOptionsItemSelected(item);
     }
+
+
     @Override//INICIANDO AS VIEWS
     public void showLoading() {
         showProgressDialog();
+        sliderLayout = (SliderLayout) findViewById(R.id.sliderLayout);
+        sliderImages = new HashMap<>();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
         //CRIAÇÃO EM GRIDE
@@ -99,6 +112,37 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 }
             }
         });
+        sliderLayout = (SliderLayout) findViewById(R.id.sliderLayout);
+        sliderImages = new HashMap<>();
+        setupSlider();
+
+    }
+    private void setupSlider() {
+        sliderImages.put("Comemore o dia mundial Star Wars", R.drawable.starwars);
+        sliderImages.put("Dia 4 de maio com você",R.drawable.starwars2);
+        sliderImages.put("Melhores design de camisetas", R.drawable.starwars3);
+        sliderImages.put("Moda pai e filho",R.drawable.starwars4);
+        sliderImages.put("Melhores design de camisetas", R.drawable.starwars3);
+
+        for (String name : sliderImages.keySet()) {
+
+            TextSliderView textSliderView = new TextSliderView(this);
+            textSliderView
+                    .description(name)
+                    .image(sliderImages.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra", name);
+            sliderLayout.addSlider(textSliderView);
+        }
+        sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        sliderLayout.setCustomAnimation(new DescriptionAnimation());
+        sliderLayout.setDuration(3000);
+        sliderLayout.addOnPageChangeListener(this);
+
     }
     @Override
     public void hideLoaging() {
@@ -109,7 +153,8 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         this.pList = pList;
         storeAdapter = new StoreAdapter(this, (ArrayList<Product>) pList);// ADAPTADOR DO CARDVIEW
         recyclerView.setAdapter(storeAdapter);
-        storeAdapter.adicionarListaLoja((ArrayList<Product>) pList);// ADICIONANDO  LISTA
+        storeAdapter.adicionarListaLoja((Product) pList);// ADICIONANDO  LISTA
+
         return pList;
     }
     @Override
@@ -163,7 +208,10 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     @Override
     protected void onPause() {
         super.onPause();
+        sliderLayout.stopAutoCycle();
         mProgressDialog.hide();
+
+        super.onPause();
     }
     @Override
     public void onDestroy() {//DEPOIS DE FEITO É DESTRUIDO, 'NÃO TIRAR SE NÃO DA PROBLEMA'
@@ -200,6 +248,27 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             mProgressDialog.hide();
         }
     }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -237,5 +306,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
             }
         }
     }
+
 }
 

@@ -43,15 +43,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".feature.payment.PaymentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".feature.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".feature.register.RegisterUserActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".feature.historic.HistoricActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
